@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfClientes", "PdfClientes.csproj", "{C622AB06-ECFE-4E81-A5A0-C6733AF485BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C622AB06-ECFE-4E81-A5A0-C6733AF485BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C622AB06-ECFE-4E81-A5A0-C6733AF485BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C622AB06-ECFE-4E81-A5A0-C6733AF485BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C622AB06-ECFE-4E81-A5A0-C6733AF485BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7EEC0C9-D688-41C4-9A29-19BEA218C406}
+	EndGlobalSection
+EndGlobal
