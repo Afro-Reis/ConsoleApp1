@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>PdfClientes</RootNamespace>
     <AssemblyName>PdfClientes</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -123,7 +123,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\config.txt" />
     <Content Include="Users_icon.ico" />
+    <Content Include="Uteis\config.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

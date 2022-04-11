@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,6 +14,9 @@ namespace PdfClientes
     {
         List<string> listaDocdig = new List<string>();
         List<Log> listaLogs = new List<Log>();
+
+        private int TotalArquivado = 0;
+        private int TotalAlertas = 0;
 
         public Distribuir()
         {
@@ -29,10 +33,14 @@ namespace PdfClientes
             if (acao == false)
             {
                 buttonDistribuir.Text = "Arquivando...";
+                buttonDistribuir.BackColor = Color.Red;
+                buttonDistribuir.ForeColor = Color.White;
             }
             else
             {
                 buttonDistribuir.Text = "Arquivar";
+                buttonDistribuir.BackColor = Color.LightGray;
+                buttonDistribuir.ForeColor = Color.Black;
             }
             buttonDistribuir.Enabled = acao;
             buttonCarregaDocDig.Enabled = acao;
@@ -40,6 +48,8 @@ namespace PdfClientes
 
         private void buttonDistribuir_Click(object sender, EventArgs e)
         {
+            if (listaDocdig.Count == 0) return;
+            
             HabilitaDesabilitaBotoes(false);
             try
             {
@@ -47,7 +57,7 @@ namespace PdfClientes
                 string cl;
                 listaLogs = new List<Log>();
                 dataGridView1.Visible = false;
-
+                ResetaTotais();
                 foreach (var nomeArquivo in listaDocdig)
                 {
                     cod = ObtemCodigoDoNomeDoArquivo(nomeArquivo);
@@ -66,40 +76,49 @@ namespace PdfClientes
                                         if (!DeletaArquivoPastaDocDig(nomeArquivo))//Se não conseguiu deletar o arquivo da pasta DocDig
                                         {
                                             AdicionaNovoLog($"{nomeArquivo} Cliente: {cl}", "Não foi possível deletar o arquivo da pasta DocDig!");
+                                            TotalAlertas++;
                                         }
                                         else
                                         {
-                                            AdicionaNovoLog($"{nomeArquivo}", "Arquivado com sucesso!");
+                                            //AdicionaNovoLog($"{nomeArquivo}", "Arquivado com sucesso!");
+                                            TotalArquivado++;
                                         }
                                     }
                                     else
                                     {
                                         AdicionaNovoLog($"{nomeArquivo} Cliente: {cl}", "Não foi possível copiar o arquivo para a pasta reserva!");
+                                        TotalAlertas++;
                                     }
                                 }
                                 else
                                 {
                                     AdicionaNovoLog($"{nomeArquivo} Cliente: {cl}", "Não foi possível copiar o arquivo para a pasta do cliente!");
+                                    TotalAlertas++;
                                 }
                             }
                             else
                             {
                                 AdicionaNovoLog($"{nomeArquivo} Cliente: {cl}", "Não foi possível criar a pasta do cliente!");
+                                TotalAlertas++;
                             }
                         }
                         else
                         {
                             AdicionaNovoLog($"{nomeArquivo}", "Cliente não encontrado ou inativo!");
+                            TotalAlertas++;
                         }
                     }
                     else
                     {
                         AdicionaNovoLog(nomeArquivo, "Erro ao identificar o código do cliente");
+                        TotalAlertas++;
                     }
                 }
                 CarregaDocDig();
                 dataGridView1.DataSource = listaLogs;
-                dataGridView1.Visible = true;
+                dataGridView1.Visible = true;               
+                
+                MostraResultado();
             }
             catch (Exception err)
             {
@@ -115,17 +134,17 @@ namespace PdfClientes
             int result;
             Int32.TryParse(nomeArquivo.Substring(0, 4), out result);
             return result;
-        }
+        }       
 
         public string ObtemNomeDoCliente(int codigo)
         {
             OleDbConnection oConn = new OleDbConnection();
-            oConn.ConnectionString =
-                      $@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={Constante.pastaDbf};Extended Properties=dBASE IV;";
+            //Colocar o caminho do banco do access clientes
+            oConn.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Access\clientes_be.accdb;Persist Security Info=False;";
 
             oConn.Open();
             OleDbCommand oCmd = oConn.CreateCommand();
-            oCmd.CommandText = $@"SELECT * FROM {Constante.pastaDbf}\Empresa.dbf where cod={codigo} and ATIVO = 'SIM'";
+            oCmd.CommandText = $@"SELECT COD, CL, ATIVO FROM Cclientes where cod={codigo} and ATIVO = {true}";
             DataTable dt = new DataTable();
             dt.Load(oCmd.ExecuteReader());
             oConn.Close();
@@ -153,11 +172,7 @@ namespace PdfClientes
         public bool CopiaArquivoParaPastaDoCliente(string nomeArquivo, string nomeCliente)
         {
             try
-            {
-                //if (nomeArquivo.Contains("3958"))
-                //{
-                //    MessageBox.Show(nomeArquivo);
-                //}
+            {                
                 string origemArquivo = Path.Combine(Constante.pastaDocDig, nomeArquivo);
 
                 string destinoArquivo = Path.Combine(Constante.pastaClientes, nomeCliente);
@@ -221,6 +236,8 @@ namespace PdfClientes
             {
                 listaDocdig = new List<string>();
                 listBoxDocDig.Items.Clear();
+                panelResultado.Visible = false;
+                dataGridView1.Visible = false;
 
                 if (Directory.Exists(Constante.pastaDocDig))//se existe
                 {
@@ -234,7 +251,14 @@ namespace PdfClientes
                     }
 
                     labelDocDig.Text = "Pasta DocDig: " + Files.Count() + " arquivos";
-                    if (listaDocdig.Count == 0) buttonDistribuir.Enabled = false;
+                    if (listaDocdig.Count == 0)
+                    {
+                        buttonDistribuir.Enabled = false;
+                    }
+                    else
+                    {
+                        buttonDistribuir.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -251,5 +275,39 @@ namespace PdfClientes
         {
             CarregaDocDig();
         }
+
+        //Reseta os contadores da listBoxResultado
+        private void ResetaTotais()
+        {
+            listBoxResultado.Items.Clear();
+            panelResultado.Visible = false;
+            TotalArquivado = 0;
+            TotalAlertas = 0;
+        }
+
+        private void MostraResultado()
+        {            
+            listBoxResultado.Items.Add($"Arquivados com sucesso = {TotalArquivado}");
+            listBoxResultado.Items.Add($"Alertas = {TotalAlertas}");
+            panelResultado.Visible = true;
+        }
+
+        //public string ObtemNomeDoCliente(int codigo)
+        //{
+        //    OleDbConnection oConn = new OleDbConnection();
+        //    oConn.ConnectionString =
+        //     $@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={Constante.pastaDbf};Extended Properties=dBASE IV;";
+
+        //    //oConn.ConnectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Access\clientes_be.accdb;Persist Security Info=False;";
+
+        //    oConn.Open();
+        //    OleDbCommand oCmd = oConn.CreateCommand();
+        //    oCmd.CommandText = $@"SELECT * FROM {Constante.pastaDbf}\Empresa.dbf where cod={codigo} and ATIVO = 'SIM'";
+        //    DataTable dt = new DataTable();
+        //    dt.Load(oCmd.ExecuteReader());
+        //    oConn.Close();
+
+        //    return dt.Rows.Count > 0 ? dt.Rows[0]["CL"].ToString() : "";
+        //}
     }
 }

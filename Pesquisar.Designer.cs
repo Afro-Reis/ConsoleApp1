@@ -133,6 +133,7 @@ namespace PdfClientes
             this.Name = "Pesquisar";
             this.Text = "Pesquisar";
             this.Load += new System.EventHandler(this.Pesquisar_Load);
+            this.Shown += new System.EventHandler(this.Pesquisar_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

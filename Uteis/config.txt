@@ -1,0 +1,9 @@
+reserva: C:\ACCESS\reserva
+clientes: C:\ACCESS\clientes
+docdig: c:\Access\docdig
+ajuda: c:\access\AjudaDocDig.txt
+
+docdig: \\central\docdig$
+reserva: \\central\ReservaDoDocDig
+clientes: \\central\Clientes
+dbf: \\central\AfroReis\Tabelas

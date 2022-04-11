@@ -34,6 +34,7 @@ namespace PdfClientes
             this.panelTop = new System.Windows.Forms.Panel();
             this.buttonPesquisar = new System.Windows.Forms.Button();
             this.buttonMover = new System.Windows.Forms.Button();
+            this.buttonAjuda = new System.Windows.Forms.Button();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +54,7 @@ namespace PdfClientes
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelTop.AutoSize = true;
             this.panelTop.BackColor = System.Drawing.SystemColors.Control;
+            this.panelTop.Controls.Add(this.buttonAjuda);
             this.panelTop.Controls.Add(this.buttonPesquisar);
             this.panelTop.Controls.Add(this.buttonMover);
             this.panelTop.Location = new System.Drawing.Point(-3, 0);
@@ -86,6 +88,20 @@ namespace PdfClientes
             this.buttonMover.UseVisualStyleBackColor = false;
             this.buttonMover.Click += new System.EventHandler(this.buttonMover_Click);
             // 
+            // buttonAjuda
+            // 
+            this.buttonAjuda.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonAjuda.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonAjuda.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonAjuda.BackgroundImage")));
+            this.buttonAjuda.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonAjuda.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAjuda.Location = new System.Drawing.Point(15, 15);
+            this.buttonAjuda.Name = "buttonAjuda";
+            this.buttonAjuda.Size = new System.Drawing.Size(42, 40);
+            this.buttonAjuda.TabIndex = 1;
+            this.buttonAjuda.UseVisualStyleBackColor = true;
+            this.buttonAjuda.Click += new System.EventHandler(this.buttonAjuda_Click);
+            // 
             // Template
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -113,6 +129,7 @@ namespace PdfClientes
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Button buttonPesquisar;
         private System.Windows.Forms.Button buttonMover;
+        private System.Windows.Forms.Button buttonAjuda;
     }
 }
 

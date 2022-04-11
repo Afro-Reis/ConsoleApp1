@@ -52,8 +52,8 @@ namespace PdfClientes
             if (!Directory.Exists(Constante.pastaReserva))
                 erros += $"\n\nPasta {Constante.pastaReserva} não está acessível";            
             
-            if (!File.Exists(Path.Combine(Constante.pastaDbf, "Empresa.dbf")))            
-                erros += $"\n\nArquivo EMPRESA.DBF não está acessível";
+            //if (!File.Exists(Path.Combine(Constante.pastaDbf, "Empresa.dbf")))            
+            //    erros += $"\n\nArquivo EMPRESA.DBF não está acessível";
 
             return erros;
         }
@@ -94,7 +94,8 @@ namespace PdfClientes
                 Constante.pastaDocDig = config.Find(_=> _.Contains("docdig")).Replace("docdig:","").Trim();
                 Constante.pastaReserva = config.Find(_ => _.Contains("reserva")).Replace("reserva:", "").Trim();
                 Constante.pastaClientes = config.Find(_ => _.Contains("clientes")).Replace("clientes:", "").Trim();
-                Constante.pastaDbf = config.Find(_ => _.Contains("dbf")).Replace("dbf:", "").Trim();
+                Constante.ArquivoAjudaDocDig = config.Find(_ => _.Contains("ajuda")).Replace("ajuda:", "").Trim();
+                //Constante.pastaDbf = config.Find(_ => _.Contains("dbf")).Replace("dbf:", "").Trim();
 
                 return true;
             }
@@ -103,6 +104,16 @@ namespace PdfClientes
                 return false;
             }
             
+        }
+
+        private void buttonAjuda_Click(object sender, EventArgs e)
+        {
+            string caminhoArquivoAjuda = $@"{Constante.ArquivoAjudaDocDig}";
+
+            if (!File.Exists(caminhoArquivoAjuda))
+                MessageBox.Show($"Não foi possível encontrar o arquivo de ajuda {caminhoArquivoAjuda}!","Atenção", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
+            System.Diagnostics.Process.Start(caminhoArquivoAjuda);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace PdfClientes
 
         private void Pesquisar_Load(object sender, EventArgs e)
         {
-            CarregaListaClientes();
+            CarregaListaClientes();           
         }
 
         private void CarregaListaClientes()
@@ -147,6 +147,11 @@ namespace PdfClientes
             axAcroPDF1.Visible = true;
             axAcroPDF1.LoadFile(caminhoPdf);
             Clipboard.SetText(caminhoPdf);         
+        }
+
+        private void Pesquisar_Shown(object sender, EventArgs e)
+        {
+            textBoxPesquisa.Focus();            
         }
         //private void CarregaListaClientes()
         //{

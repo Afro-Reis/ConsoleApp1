@@ -6,5 +6,6 @@
         public static string pastaReserva;
         public static string pastaClientes;
         public static string pastaDbf;
+        public static string ArquivoAjudaDocDig;
     }
 }
