@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    public class Teste
+    internal class EnviarEmail
     {
-        string nome = "";
-        string email = "";
     }
 }
