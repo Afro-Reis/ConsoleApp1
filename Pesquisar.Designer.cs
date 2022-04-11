@@ -37,7 +37,9 @@ namespace PdfClientes
             this.axAcroPDF1 = new AxAcroPDFLib.AxAcroPDF();
             this.textBoxPesquisaPastaCliente = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.dataGridPastaClientes = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridPastaClientes)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -77,11 +79,11 @@ namespace PdfClientes
             this.listBoxPastaClientes.FormattingEnabled = true;
             this.listBoxPastaClientes.ItemHeight = 18;
             this.listBoxPastaClientes.Location = new System.Drawing.Point(34, 96);
+            this.listBoxPastaClientes.MultiColumn = true;
             this.listBoxPastaClientes.Name = "listBoxPastaClientes";
-            this.listBoxPastaClientes.Size = new System.Drawing.Size(520, 508);
+            this.listBoxPastaClientes.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.listBoxPastaClientes.Size = new System.Drawing.Size(520, 238);
             this.listBoxPastaClientes.TabIndex = 3;
-            this.listBoxPastaClientes.Click += new System.EventHandler(this.listBoxPastaClientes_Click);
-            this.listBoxPastaClientes.KeyUp += new System.Windows.Forms.KeyEventHandler(this.listBoxPastaClientes_KeyUp);
             // 
             // axAcroPDF1
             // 
@@ -114,12 +116,24 @@ namespace PdfClientes
             this.label1.TabIndex = 1;
             this.label1.Text = "Pesquisar documento:";
             // 
+            // dataGridPastaClientes
+            // 
+            this.dataGridPastaClientes.AllowUserToAddRows = false;
+            this.dataGridPastaClientes.AllowUserToDeleteRows = false;
+            this.dataGridPastaClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridPastaClientes.Location = new System.Drawing.Point(33, 351);
+            this.dataGridPastaClientes.Name = "dataGridPastaClientes";
+            this.dataGridPastaClientes.Size = new System.Drawing.Size(521, 252);
+            this.dataGridPastaClientes.TabIndex = 6;
+            this.dataGridPastaClientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridPastaClientes_CellClick);            
+            // 
             // Pesquisar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.PeachPuff;
             this.ClientSize = new System.Drawing.Size(1200, 623);
+            this.Controls.Add(this.dataGridPastaClientes);
             this.Controls.Add(this.listBoxResultado);
             this.Controls.Add(this.axAcroPDF1);
             this.Controls.Add(this.listBoxPastaClientes);
@@ -135,6 +149,7 @@ namespace PdfClientes
             this.Load += new System.EventHandler(this.Pesquisar_Load);
             this.Shown += new System.EventHandler(this.Pesquisar_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.axAcroPDF1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridPastaClientes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -149,5 +164,6 @@ namespace PdfClientes
         private AxAcroPDFLib.AxAcroPDF axAcroPDF1;
         private System.Windows.Forms.TextBox textBoxPesquisaPastaCliente;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dataGridPastaClientes;
     }
 }

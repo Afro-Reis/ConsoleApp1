@@ -11,7 +11,7 @@ namespace PdfClientes
     public partial class Pesquisar : Form
     {
         List<string> listaClientes = new List<string>();
-        List<string> listaDocumentosClientes = new List<string>();
+        List<ArquivosCliente> listaDocumentosClientes = new List<ArquivosCliente>();        
         private string clienteSelecionado;        
 
         public Pesquisar()
@@ -90,7 +90,7 @@ namespace PdfClientes
         {
             try
             {
-                listaDocumentosClientes = new List<string>();
+                listaDocumentosClientes = new List<ArquivosCliente>();
 
                 string pastaCliente = Path.Combine(Constante.pastaClientes, nomeCliente);
 
@@ -101,58 +101,64 @@ namespace PdfClientes
 
                     foreach (FileInfo file in Files)
                     {
-                        //listBoxPastaClientes.Items.Add(file.Name);
-                        listaDocumentosClientes.Add(file.Name);
+                        listaDocumentosClientes.Add(new ArquivosCliente
+                        {
+                            Arquivo = file.Name,
+                            Selecionado = null
+                        });
                     }
-                    listBoxPastaClientes.DataSource = listaDocumentosClientes;
-                }
-                else
-                {
-                    listaDocumentosClientes.Add("******************** Nenhum documento encontrado! ********************");
-                }
+                }                      
             }
             catch
             {
                 MessageBox.Show($"Erro ao carregar a pasta do cliente: {nomeCliente}");
             }
-            listBoxPastaClientes.DataSource = listaDocumentosClientes;
+            dataGridPastaClientes.DataSource = listaDocumentosClientes;
+            dataGridPastaClientes.Columns[0].Width = 378;
+            dataGridPastaClientes.Columns[1].Width = 100;
+            dataGridPastaClientes.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         private void PesquisaDocumentosCliente(string term = "")
         {
-            var result = listaDocumentosClientes.Where(_ => _.Contains(term.ToUpper())).ToList();
-            listBoxPastaClientes.DataSource = result;
+            var result = listaDocumentosClientes.Where(_ => _.Arquivo.Contains(term.ToUpper())).ToList();
+            dataGridPastaClientes.DataSource = result;            
         }
 
         private void textBoxPesquisaPastaCliente_KeyUp(object sender, KeyEventArgs e)
         {
             PesquisaDocumentosCliente(textBoxPesquisaPastaCliente.Text);
         }
-
-        private void listBoxPastaClientes_Click(object sender, EventArgs e)
-        {
-            MostraCopiaPdf();
-        }
-
-        private void listBoxPastaClientes_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-                MostraCopiaPdf();
-        }
-
-        private void MostraCopiaPdf()
+        
+        private void MostraCopiaPdf(string pdfClicado)
         {
             string caminhoPdf = Path.Combine(Constante.pastaClientes, clienteSelecionado);
-            caminhoPdf = Path.Combine(caminhoPdf, listBoxPastaClientes.SelectedItem.ToString());
-            axAcroPDF1.Visible = true;
-            axAcroPDF1.LoadFile(caminhoPdf);
-            Clipboard.SetText(caminhoPdf);         
+            if(pdfClicado != null)
+            {
+                caminhoPdf = Path.Combine(caminhoPdf, pdfClicado);
+                axAcroPDF1.Visible = true;
+                axAcroPDF1.LoadFile(caminhoPdf);
+                Clipboard.SetText(caminhoPdf);
+            }
         }
 
         private void Pesquisar_Shown(object sender, EventArgs e)
         {
             textBoxPesquisa.Focus();            
         }
+
+        private void dataGridPastaClientes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var pdfClicado = dataGridPastaClientes.Rows[e.RowIndex].Cells[0];
+            MostraCopiaPdf(pdfClicado.Value.ToString());
+            
+            if (e.ColumnIndex == 1)//Verifica se clicou na coluna Selecionado
+            {
+                var cellSelecionada = dataGridPastaClientes.Rows[e.RowIndex].Cells[1];
+                cellSelecionada.Value = cellSelecionada.Value == null ? "X" : null;
+            }
+        }        
+
         //private void CarregaListaClientes()
         //{
         //    try
@@ -177,6 +183,12 @@ namespace PdfClientes
         //    {
         //        MessageBox.Show($"Erro ao carregar os clientes. ERRO: {e.Message}");
         //    }
+        //}
+
+        //private void listBoxPastaClientes_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    if (e.KeyCode == Keys.Enter)
+        //        MostraCopiaPdf();
         //}
     }
 }

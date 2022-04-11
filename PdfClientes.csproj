@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Uteis\ArquivosCliente.cs" />
     <Compile Include="Uteis\Constante.cs" />
     <Compile Include="Uteis\Log.cs" />
     <EmbeddedResource Include="Distribuir.resx">
