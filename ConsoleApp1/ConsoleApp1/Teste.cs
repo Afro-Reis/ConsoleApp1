@@ -11,5 +11,6 @@ namespace ConsoleApp1
         string nome = "";
         string sobrenome = "";
         string email = "";
+        string telefone = "";
     }
 }
