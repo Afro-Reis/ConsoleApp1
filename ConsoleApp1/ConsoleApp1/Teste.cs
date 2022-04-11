@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-    internal class Teste
+    public class Teste
     {
+        string nome = "";
     }
 }
